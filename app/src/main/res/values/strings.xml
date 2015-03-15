@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">FauxExposure</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string-array name="exposureType">
+        <item>Average</item>
+        <item>Subtract</item>
+        <item>Swag two hundred million</item>
+    </string-array>
+
+    <string name="title_activity_capture">Capture</string>
+    <string name="title_activity_frame">frame</string>
+
+</resources>
