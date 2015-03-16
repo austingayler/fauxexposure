@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,7 +15,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileOutputStream;
+
+@SuppressWarnings("deprecation")
 public class Frame extends Activity {
+    int imgCount;
 
     SurfaceView surfaceView;
     SurfaceHolder surfaceHolder;
@@ -23,9 +29,11 @@ public class Frame extends Activity {
 
     private boolean cameraConfigured = false;
     boolean landscape = false;
+    private android.hardware.Camera.PictureCallback jpg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        imgCount = 0;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_frame);
 
@@ -61,8 +69,9 @@ public class Frame extends Activity {
         exposeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "expose button pressed", Toast.LENGTH_SHORT).show();
-                releaseCameraAndPreview();
+                //sleep() to emulate 2 second timer to reduce camera shake
+                camera.takePicture(shutterCallback, null, pictureCallback);
+                //releaseCameraAndPreview();
 
             }
         });
@@ -113,7 +122,7 @@ public class Frame extends Activity {
     }
 
     private void safeCameraOpen() {
-       try {
+        try {
             releaseCameraAndPreview();
             camera = Camera.open();
         } catch (Exception e) {
@@ -195,6 +204,36 @@ public class Frame extends Activity {
         public void surfaceDestroyed(SurfaceHolder holder) {
             //graciously give the camera back so other apps can use it
             releaseCameraAndPreview();
+        }
+    };
+
+    Camera.PictureCallback pictureCallback = new Camera.PictureCallback() {
+        public void onPictureTaken(byte[] data, Camera camera) {
+
+            if(imgCount > 4) return;
+            String fname = Integer.toString(imgCount) + ".jpg";
+            File photo = new File(Environment.getExternalStorageDirectory(), fname);
+            if (photo.exists()) {
+                photo.delete();
+            }
+            try {
+                FileOutputStream fos = new FileOutputStream(photo.getPath());
+                fos.write(data);
+                fos.close();
+                toast("picture been written to " + Environment.getExternalStorageDirectory());
+                imgCount++;
+                camera.takePicture(shutterCallback, null, pictureCallback);
+            } catch (java.io.IOException e) {
+                Log.e("PictureDemo", "Exception in photoCallback", e);
+                toast("somethin done went wrong yo");
+            }
+        }
+    };
+
+    Camera.ShutterCallback shutterCallback = new Camera.ShutterCallback() {
+        @Override
+        public void onShutter() {
+
         }
     };
 }
