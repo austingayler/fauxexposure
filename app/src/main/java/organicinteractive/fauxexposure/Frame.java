@@ -1,7 +1,6 @@
 package organicinteractive.fauxexposure;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.os.Bundle;
@@ -29,7 +28,10 @@ public class Frame extends Activity {
 
     private boolean cameraConfigured = false;
     boolean landscape = false;
-    private android.hardware.Camera.PictureCallback jpg;
+    private long startTime;
+
+    String exposureType;
+    int exposureTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +39,10 @@ public class Frame extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_frame);
 
-        Intent intent = getIntent();
-        String message = intent.getStringExtra(Main.exposureSettings);
+        Bundle extras = getIntent().getExtras();
+
+        exposureType = extras.getString(Main.exposureTypeMsg);
+        exposureTime = extras.getInt(Main.numSecondsMsg, 10);
 
         exposeBtn = (Button) findViewById(R.id.exposeBtn);
         rotateBtn = (Button) findViewById(R.id.rotateBtn);
@@ -70,9 +74,8 @@ public class Frame extends Activity {
             @Override
             public void onClick(View v) {
                 //sleep() to emulate 2 second timer to reduce camera shake
+                startTime = System.currentTimeMillis();
                 camera.takePicture(shutterCallback, null, pictureCallback);
-                //releaseCameraAndPreview();
-
             }
         });
 
@@ -175,7 +178,6 @@ public class Frame extends Activity {
 
             camera.setParameters(parameters);
             camera.setDisplayOrientation(90);
-            //always keep these things:
             initPreview(width, height);
             camera.startPreview();
         }
@@ -188,10 +190,22 @@ public class Frame extends Activity {
 
     Camera.PictureCallback pictureCallback = new Camera.PictureCallback() {
         public void onPictureTaken(byte[] data, Camera camera) {
+            long timeElapsed = System.currentTimeMillis() - startTime;
+            if(timeElapsed > exposureTime * 1000) {
+                return;
+            }
 
-            if(imgCount > 4) return;
-            String fname = Integer.toString(imgCount) + ".jpg";
-            File photo = new File(Environment.getExternalStorageDirectory(), fname);
+            String fName = Integer.toString(imgCount) + ".jpg";
+            String fDir = Environment.getExternalStorageDirectory() + "/fauxexposure/";
+            File sddir = new File(fDir);
+            if (!sddir.mkdirs()) { //make sure dir exists before writing to it
+                if (sddir.exists()) {
+                } else {
+                    toast("error making folder yo");
+                    return;
+                }
+            }
+            File photo = new File(fDir, fName);
             if (photo.exists()) {
                 photo.delete();
             }
@@ -199,9 +213,10 @@ public class Frame extends Activity {
                 FileOutputStream fos = new FileOutputStream(photo.getPath());
                 fos.write(data);
                 fos.close();
-                toast("picture been written to " + Environment.getExternalStorageDirectory());
+                toast("pic " + Integer.toString(imgCount) + " been written to " + photo.getPath());
                 imgCount++;
-                camera.takePicture(shutterCallback, null, pictureCallback);
+                startPreview(); //update camera preview so we can get another picture
+                camera.takePicture(shutterCallback, null, pictureCallback); //take another picture once current one has been written
             } catch (java.io.IOException e) {
                 Log.e("PictureDemo", "Exception in photoCallback", e);
                 toast("somethin done went wrong yo");

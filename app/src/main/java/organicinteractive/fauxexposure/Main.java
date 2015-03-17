@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 
 public class Main extends ActionBarActivity {
@@ -16,7 +17,6 @@ public class Main extends ActionBarActivity {
     private Spinner exposureSpinner;
     public final static String numSecondsMsg = "com.organicinteractive.fauxexposure.numSecondsMsg";
     public final static String exposureTypeMsg = "com.organicinteractive.fauxexposure.exposureTypeMsg";
-    public final static String exposureSettings = "com.organicinteractive.fauxexposure.exposureSettings";
     Intent intent;
     Spinner spinner;
     EditText editText;
@@ -41,16 +41,26 @@ public class Main extends ActionBarActivity {
     }
 
     public void Frame(View v) {
-        String numSeconds = editText.getText().toString();
-        String exposureType = spinner.getSelectedItem().toString();
-        String concat = numSeconds + exposureType;
+        String et = editText.getText().toString();
+        if(!et.equals("") && et != null) {
+            int numSeconds = Integer.valueOf(et);
+            String exposureType = spinner.getSelectedItem().toString();
 
-        Intent intent = new Intent(this, Frame.class);
-        intent.putExtra(exposureSettings, concat);
-        //Toast.makeText(getApplicationContext(), concat, Toast.LENGTH_SHORT).show();
-        startActivity(intent);
+            Intent intent = new Intent(this, Frame.class);
+            intent.putExtra(numSecondsMsg, numSeconds);
+            intent.putExtra(exposureTypeMsg, exposureType);
+
+            startActivity(intent);
+        } else {
+            toast("Enter desired exposure time.");
+        }
 
 
+
+    }
+
+    private void toast(String s) {
+        Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
     }
 
 
