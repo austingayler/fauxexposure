@@ -1,6 +1,7 @@
 package organicinteractive.fauxexposure;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import java.io.FileOutputStream;
 @SuppressWarnings("deprecation")
 public class Frame extends Activity {
     int imgCount;
+    public final static String imgCountMsg = "com.organicinteractive.fauxexposure.imgCountMsg";
 
     SurfaceView surfaceView;
     SurfaceHolder surfaceHolder;
@@ -32,6 +34,8 @@ public class Frame extends Activity {
 
     String exposureType;
     int exposureTime;
+
+    View globalView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +79,7 @@ public class Frame extends Activity {
             public void onClick(View v) {
                 //sleep() to emulate 2 second timer to reduce camera shake
                 startTime = System.currentTimeMillis();
+                globalView = v;
                 camera.takePicture(shutterCallback, null, pictureCallback);
             }
         });
@@ -96,6 +101,7 @@ public class Frame extends Activity {
 
     @Override
     public void onResume() {
+        imgCount = 0;
         super.onResume();
         safeCameraOpen();
         startPreview();
@@ -192,6 +198,12 @@ public class Frame extends Activity {
         public void onPictureTaken(byte[] data, Camera camera) {
             long timeElapsed = System.currentTimeMillis() - startTime;
             if(timeElapsed > exposureTime * 1000) {
+//                toast("all done!");
+                Intent intent = new Intent(globalView.getContext(), Render.class);
+                intent.putExtra(imgCountMsg, imgCount);
+                intent.putExtra(Main.exposureTypeMsg, exposureType);
+
+                startActivity(intent);
                 return;
             }
 
@@ -213,7 +225,7 @@ public class Frame extends Activity {
                 FileOutputStream fos = new FileOutputStream(photo.getPath());
                 fos.write(data);
                 fos.close();
-                toast("pic " + Integer.toString(imgCount) + " been written to " + photo.getPath());
+//                toast("pic " + Integer.toString(imgCount) + " been written to " + photo.getPath());
                 imgCount++;
                 startPreview(); //update camera preview so we can get another picture
                 camera.takePicture(shutterCallback, null, pictureCallback); //take another picture once current one has been written

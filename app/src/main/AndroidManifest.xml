@@ -2,16 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="organicinteractive.fauxexposure" >
 
-    <uses-feature android:name="android.hardware.camera" android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
+        android:configChanges="orientation"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:configChanges = "orientation"
         android:theme="@style/AppTheme" >
         <activity
             android:name=".Main"
@@ -24,7 +26,11 @@
         </activity>
         <activity
             android:name=".Frame"
-            android:label="@string/title_activity_frame">
+            android:label="@string/title_activity_frame" >
+        </activity>
+        <activity
+            android:name=".Render"
+            android:label="@string/title_activity_render" >
         </activity>
     </application>
 

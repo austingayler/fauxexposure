@@ -42,7 +42,7 @@ public class Main extends ActionBarActivity {
 
     public void Frame(View v) {
         String et = editText.getText().toString();
-        if(!et.equals("") && et != null) {
+        if(!et.equals("") && et != null) { //make sure user has entered a time
             int numSeconds = Integer.valueOf(et);
             String exposureType = spinner.getSelectedItem().toString();
 
