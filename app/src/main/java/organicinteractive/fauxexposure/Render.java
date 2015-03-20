@@ -85,6 +85,7 @@ public class Render extends Activity {
         String fpOut = fp + "out.jpg";
 
         int[] px = new int[width * height];
+        int[][][] pxRGB = new int[height][width][3];
         int[] pxOut = new int[width * height];
         int red, green, blue;
         int offset;
@@ -93,21 +94,34 @@ public class Render extends Activity {
         for (int imgCounter = 0; imgCounter < imgCount; imgCounter++) {
             bm = BitmapFactory.decodeFile(fp + Integer.toString(imgCounter) + ".jpg");
             bm.getPixels(px, 0, width, 0, 0, width, height);
+
             for (int y = 0; y < height; y++) {
                 for (int x = 0; x < width; x++) {
                     offset = y * width + x;
 
-                    blue = px[offset] & 0xff / imgCount;
-                    green = ((px[offset] >> 8) & 0xff) / imgCount;
-                    red = ((px[offset] >> 16) & 0xff) / imgCount;
-
-                    pxOut[offset] += 0xff000000 | (red << 16) | (green << 8) | blue;
+                    pxRGB[y][x][0] +=  px[offset] & 0xff; //blue
+                    pxRGB[y][x][1] +=  (px[offset] >> 8) & 0xff; //green
+                    pxRGB[y][x][2] +=  (px[offset] >> 16) & 0xff; //red
 
                 }
             }
+
             if(!keepPictures) {
                 File curPic = new File(fp + Integer.toString(imgCounter) + ".jpg");
                 curPic.delete();
+            }
+        }
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                offset = y * width + x;
+
+                blue = pxRGB[y][x][0] / imgCount;
+                green = pxRGB[y][x][1] / imgCount;
+                red = pxRGB[y][x][2] / imgCount;
+
+                pxOut[offset] += 0xff000000 | (red << 16) | (green << 8) | blue;
+
             }
         }
 
