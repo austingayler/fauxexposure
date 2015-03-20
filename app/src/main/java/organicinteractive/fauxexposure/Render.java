@@ -18,7 +18,7 @@ public class Render extends Activity {
     int imgCount;
     private int width;
     private int height;
-    boolean keepFiles = false;
+    boolean keepPictures = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +68,7 @@ public class Render extends Activity {
         width = options.outWidth;
         height = options.outHeight;
 
-//        toast("img is " + Integer.toString(width) + " by " + Integer.toString(height));
+        toast("img is " + Integer.toString(width) + " by " + Integer.toString(height));
 
         for (int i = 1; i < imgCount; i++) {
             BitmapFactory.decodeFile(fp + Integer.toString(i) + ".jpg", options);
@@ -105,9 +105,9 @@ public class Render extends Activity {
 
                 }
             }
-            if(!keepFiles) {
-                File curPhoto = new File(fp + Integer.toString(imgCounter) + ".jpg");
-                curPhoto.delete();
+            if(!keepPictures) {
+                File curPic = new File(fp + Integer.toString(imgCounter) + ".jpg");
+                curPic.delete();
             }
         }
 
