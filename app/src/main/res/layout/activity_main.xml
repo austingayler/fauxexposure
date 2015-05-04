@@ -1,62 +1,65 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".Main">
+    tools:context=".Main">
 
     <Spinner
+        android:id="@+id/exposureType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/exposureType"
-        android:spinnerMode="dialog"
-        android:layout_marginTop="39dp"
-        android:entries="@array/exposureType"
-        android:background="#FFB2BCB8"
         android:layout_alignLeft="@+id/frameBtn"
-        android:layout_alignStart="@+id/frameBtn" />
+        android:layout_alignStart="@+id/frameBtn"
+        android:layout_marginTop="39dp"
+        android:background="#FFB2BCB8"
+        android:entries="@array/exposureType"
+        android:spinnerMode="dialog" />
 
     <Button
+        android:id="@+id/frameBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Frame shot"
-        android:id="@+id/frameBtn"
-        android:layout_marginBottom="72dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:onClick="Frame"/>
+        android:layout_marginBottom="72dp"
+        android:onClick="Frame"
+        android:text="Frame shot" />
 
     <EditText
+        android:id="@+id/numSeconds"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/numSeconds"
-        android:editable="true"
+        android:layout_alignEnd="@+id/exposureType"
+        android:layout_alignLeft="@+id/exposureType"
+        android:layout_alignRight="@+id/exposureType"
+        android:layout_alignStart="@+id/exposureType"
         android:layout_below="@+id/exposureType"
         android:layout_marginTop="41dp"
-        android:layout_alignLeft="@+id/exposureType"
-        android:layout_alignStart="@+id/exposureType"
         android:background="#ffb2bcb8"
-        android:layout_alignRight="@+id/exposureType"
-        android:layout_alignEnd="@+id/exposureType" />
+        android:editable="true"
+        android:ems="10"
+        android:inputType="number" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Exposure Type"
         android:id="@+id/exposureLbl"
-        android:layout_alignTop="@+id/exposureType"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Time (s)"
-        android:id="@+id/timeLbl"
-        android:layout_alignTop="@+id/numSeconds"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/exposureType"
+        android:text="Exposure Type" />
+
+    <TextView
+        android:id="@+id/timeLbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/numSeconds"
+        android:text="Time (s)" />
 
 </RelativeLayout>

@@ -8,7 +8,9 @@
     <string-array name="exposureType">
         <item>Average</item>
         <item>Subtract</item>
-        <item>Swag two hundred million</item>
+        <item>Maximum</item>
+        <item>Minimum</item>
+        <item>Aluminum</item>
     </string-array>
 
     <string name="title_activity_capture">Capture</string>

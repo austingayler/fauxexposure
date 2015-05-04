@@ -12,29 +12,29 @@
         android:layout_height="wrap_content" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Begin Exposure"
         android:id="@+id/exposeBtn"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
-
-    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="rt"
-        android:id="@+id/rotateBtn"
-        android:layout_marginTop="82dp"
-        android:layout_below="@+id/exposeBtn"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="Begin Exposure" />
 
     <Button
+        android:id="@+id/rotateBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/exposeBtn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="82dp"
+        android:text="rt" />
+
+    <Button
+        android:id="@+id/lockExposureBtn"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Lock Exposure"
-        android:id="@+id/lockExposureBtn"
         android:layout_below="@+id/rotateBtn"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="39dp" />
+        android:layout_marginTop="39dp"
+        android:text="Lock Exposure" />
 </RelativeLayout>

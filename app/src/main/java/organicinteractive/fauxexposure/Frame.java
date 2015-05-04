@@ -6,9 +6,8 @@ import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -20,22 +19,46 @@ import java.io.FileOutputStream;
 
 @SuppressWarnings("deprecation")
 public class Frame extends Activity {
-    int imgCount;
     public final static String imgCountMsg = "com.organicinteractive.fauxexposure.imgCountMsg";
-
+    int imgCount;
     SurfaceView surfaceView;
     SurfaceHolder surfaceHolder;
     Button exposeBtn, rotateBtn, lockExposureBtn;
     Camera camera;
-
-    private boolean cameraConfigured = false;
     boolean landscape = false;
-    private long startTime;
-
     String exposureType;
     int exposureTime;
-
     View globalView;
+    SurfaceHolder.Callback surfaceCallback = new SurfaceHolder.Callback() {
+        public void surfaceCreated(SurfaceHolder holder) {
+        }
+
+        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+            camera.stopPreview();
+
+            Camera.Parameters parameters = camera.getParameters();
+
+//            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_EDOF);
+
+            camera.setParameters(parameters);
+            camera.setDisplayOrientation(90);
+            initPreview(width, height);
+            camera.startPreview();
+        }
+
+        public void surfaceDestroyed(SurfaceHolder holder) {
+            //graciously give the camera back so other apps can use it
+            releaseCameraAndPreview();
+        }
+    };
+    Camera.ShutterCallback shutterCallback = new Camera.ShutterCallback() {
+        @Override
+        public void onShutter() {
+
+        }
+    };
+    private boolean cameraConfigured = false;
+    private long startTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,11 +99,17 @@ public class Frame extends Activity {
 
         exposeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                //sleep() to emulate 2 second timer to reduce camera shake
-                startTime = System.currentTimeMillis();
-                globalView = v;
-                camera.takePicture(shutterCallback, null, pictureCallback);
+            public void onClick(final View v) {
+                //3 second timer to eliminate camera shake
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        startTime = System.currentTimeMillis();
+                        globalView = v;
+                        camera.takePicture(shutterCallback, null, pictureCallback);
+                    }
+                }, 3000);
+
             }
         });
 
@@ -89,6 +118,7 @@ public class Frame extends Activity {
             public void onClick(View v) {
                 Camera.Parameters parameters = camera.getParameters();
                 parameters.setAutoExposureLock(!parameters.getAutoExposureLock());
+                toast("auto exposure set to " + parameters.getAutoExposureLock());
                 camera.setParameters(parameters);
             }
         });
@@ -111,23 +141,6 @@ public class Frame extends Activity {
         if (cameraConfigured && camera != null) {
             camera.startPreview();
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_frame, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private void safeCameraOpen() {
@@ -169,40 +182,14 @@ public class Frame extends Activity {
             }
             cameraConfigured = true;
         }
-    }
-
-    SurfaceHolder.Callback surfaceCallback = new SurfaceHolder.Callback() {
-        public void surfaceCreated(SurfaceHolder holder) {
-        }
-
-        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-            camera.stopPreview();
-
-            Camera.Parameters parameters = camera.getParameters();
-
-//            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_EDOF);
-
-            camera.setParameters(parameters);
-            camera.setDisplayOrientation(90);
-            initPreview(width, height);
-            camera.startPreview();
-        }
-
-        public void surfaceDestroyed(SurfaceHolder holder) {
-            //graciously give the camera back so other apps can use it
-            releaseCameraAndPreview();
-        }
-    };
-
-    Camera.PictureCallback pictureCallback = new Camera.PictureCallback() {
+    }    Camera.PictureCallback pictureCallback = new Camera.PictureCallback() {
         public void onPictureTaken(byte[] data, Camera camera) {
             long timeElapsed = System.currentTimeMillis() - startTime;
-            if(timeElapsed > exposureTime * 1000) {
+            if (timeElapsed > exposureTime * 1000) {
 //                toast("all done!");
                 Intent intent = new Intent(globalView.getContext(), Render.class);
                 intent.putExtra(imgCountMsg, imgCount);
                 intent.putExtra(Main.exposureTypeMsg, exposureType);
-
                 startActivity(intent);
                 return;
             }
@@ -236,10 +223,5 @@ public class Frame extends Activity {
         }
     };
 
-    Camera.ShutterCallback shutterCallback = new Camera.ShutterCallback() {
-        @Override
-        public void onShutter() {
 
-        }
-    };
 }

@@ -14,13 +14,13 @@ import android.widget.Toast;
 
 public class Main extends ActionBarActivity {
 
-    private Spinner exposureSpinner;
     public final static String numSecondsMsg = "com.organicinteractive.fauxexposure.numSecondsMsg";
     public final static String exposureTypeMsg = "com.organicinteractive.fauxexposure.exposureTypeMsg";
     Intent intent;
     Spinner spinner;
     EditText editText;
     Button frameBtn;
+    private Spinner exposureSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,7 @@ public class Main extends ActionBarActivity {
 
     public void Frame(View v) {
         String et = editText.getText().toString();
-        if(!et.equals("") && et != null) { //make sure user has entered a time
+        if (!et.equals("") && et != null) { //make sure user has entered a time
             int numSeconds = Integer.valueOf(et);
             String exposureType = spinner.getSelectedItem().toString();
 
@@ -56,13 +56,11 @@ public class Main extends ActionBarActivity {
         }
 
 
-
     }
 
     private void toast(String s) {
         Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
