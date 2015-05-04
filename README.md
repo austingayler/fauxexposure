@@ -1,10 +1,12 @@
 # fauxexposure
 
 
-v 0.1
+v 0.2
 
-Working average exposure up in this
+Features:
 
-
-Todo:
-Max/min, mode, other things that start with m.
+    - Average
+    - Subtract (featuring the Jeff McClintock median filter algorithm)
+    - Maximum
+    - Minimum
+    - Aluminum (actually this does nothing) 
