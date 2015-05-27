@@ -194,7 +194,7 @@ public class Frame extends Activity {
                 return;
             }
 
-            String fName = Integer.toString(imgCount) + ".jpg";
+            String fName = String.format("%02d", imgCount) + ".jpg";
             String fDir = Environment.getExternalStorageDirectory() + "/fauxexposure/";
             File sddir = new File(fDir);
             if (!sddir.mkdirs()) { //make sure dir exists before writing to it

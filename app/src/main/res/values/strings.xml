@@ -10,7 +10,7 @@
         <item>Subtract</item>
         <item>Maximum</item>
         <item>Minimum</item>
-        <item>Aluminum</item>
+        <item>Median (OpenCV)</item>
     </string-array>
 
     <string name="title_activity_capture">Capture</string>
