@@ -117,9 +117,6 @@ public class Render extends Activity {
                 break;
         }
         dbg("t1");
-        contrastBtn = (Button) findViewById(R.id.contrastBtn);
-        smoothBtn = (Button) findViewById(R.id.smoothBtn);
-        erodeBtn = (Button) findViewById(R.id.erodeBtn);
         dbg("t2");
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -140,40 +137,28 @@ public class Render extends Activity {
                 //temp mat for bitmap -> mat and back conversions
                 //imageView can only display bitmaps, and OpenCV can only manipulate Mats
                 Bitmap bmp32 = displayBM.copy(Bitmap.Config.ARGB_8888, true);
-                Utils.bitmapToMat(bmp32, m);
+                Utils.bitmapToMat(bmp32, m); //creates a CV_8UC3 in m
                 dbg("t6");
 
             }
         }, 2500);
         dbg("6.5");
-        contrastBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dbg("t7");
-                org.opencv.imgproc.Imgproc.equalizeHist(m, m);
-                dbg("7.5");
-                displayBM = Bitmap.createBitmap(m.cols(), m.rows(),Bitmap.Config.ARGB_8888);
-                dbg("7.75");
-                Utils.matToBitmap(m, displayBM);
-                dbg("t8");
-                imageView = (ImageView) findViewById(R.id.imageView);
-                imageView.setImageBitmap(displayBM);
-            }
-        });
 
-        smoothBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+//        smoothBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Mat m2 = new Mat();
+//                dbg("7");
+//                m.convertTo(m, CV_8UC3);
+//                org.opencv.imgproc.Imgproc.bilateralFilter(m, m2, 15, 80, 80);
+//                dbg("8");
+//                Utils.matToBitmap(m2, displayBM);
+//                dbg("9");
+//                imageView = (ImageView) findViewById(R.id.imageView);
+//                imageView.setImageBitmap(displayBM);
+//            }
+//        });
 
-            }
-        });
-
-        erodeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
 
     }
 

@@ -28,37 +28,4 @@
         android:maxHeight="1500px"
         android:scaleType="centerInside" />
 
-    <ToggleButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Contrast"
-        android:id="@+id/contrastBtn"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:checked="false"
-        android:textOn="Contrast"
-        android:textOff="Contrast" />
-
-    <ToggleButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Bilateral Smooth"
-        android:id="@+id/smoothBtn"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:textOff="Smooth"
-        android:textOn="Smooth" />
-
-    <ToggleButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Erode"
-        android:id="@+id/erodeBtn"
-        android:layout_alignBottom="@+id/contrastBtn"
-        android:layout_centerHorizontal="true"
-        android:textOn="Erode"
-        android:textOff="Erode" />
-
 </RelativeLayout>

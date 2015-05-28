@@ -2,7 +2,6 @@ package organicinteractive.fauxexposure;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Environment;
@@ -72,7 +71,7 @@ public class Frame extends Activity {
         exposureTime = extras.getInt(Main.numSecondsMsg, 10);
 
         exposeBtn = (Button) findViewById(R.id.exposeBtn);
-        rotateBtn = (Button) findViewById(R.id.rotateBtn);
+//        rotateBtn = (Button) findViewById(R.id.rotateBtn);
         lockExposureBtn = (Button) findViewById(R.id.lockExposureBtn);
 
         surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
@@ -80,21 +79,21 @@ public class Frame extends Activity {
         surfaceHolder.addCallback(surfaceCallback);
         surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
-        rotateBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (getResources().getConfiguration().orientation) {
-                    case Configuration.ORIENTATION_PORTRAIT:
-                        toast("switching to landscape");
-                        landscape = true;
-                        break;
-                    case Configuration.ORIENTATION_LANDSCAPE:
-                        toast("switching to portrait");
-                        landscape = false;
-                        break;
-                }
-            }
-        });
+//        rotateBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                switch (getResources().getConfiguration().orientation) {
+//                    case Configuration.ORIENTATION_PORTRAIT:
+//                        toast("switching to landscape");
+//                        landscape = true;
+//                        break;
+//                    case Configuration.ORIENTATION_LANDSCAPE:
+//                        toast("switching to portrait");
+//                        landscape = false;
+//                        break;
+//                }
+//            }
+//        });
 
 
         exposeBtn.setOnClickListener(new View.OnClickListener() {

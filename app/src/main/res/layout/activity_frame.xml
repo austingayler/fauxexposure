@@ -20,21 +20,12 @@
         android:text="Begin Exposure" />
 
     <Button
-        android:id="@+id/rotateBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/exposeBtn"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="82dp"
-        android:text="rt" />
-
-    <Button
         android:id="@+id/lockExposureBtn"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rotateBtn"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="39dp"
-        android:text="Lock Exposure" />
+        android:text="Lock Exposure"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/exposeBtn"
+        android:layout_alignStart="@+id/exposeBtn" />
 </RelativeLayout>
